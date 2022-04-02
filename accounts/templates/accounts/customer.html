@@ -39,6 +39,8 @@
 		<div class="card card-body">
 			<form method="get">
 
+				{{myFilter.form}}
+
 		    <button class="btn btn-primary" type="submit">Search</button>
 		  </form>
 		</div>
@@ -53,7 +55,7 @@
 			<table class="table table-sm">
 				<tr>
 					<th>Product</th>
-					<th>Category</th>
+					<th>Note</th>
 					<th>Date Orderd</th>
 					<th>Status</th>
 					<th>Update</th>
@@ -63,7 +65,7 @@
 				{% for i in orders %}
 				<tr>
 					<th>{{i.product}}</th>
-					<th>{{i.product.category}}</th>
+					<th>{{i.note}}</th>
 					<th>{{i.date_created}}</th>
 					<th>{{i.status}}</th>
 					<td><a class="btn btn-sm btn-info" href="{% url 'update_order' i.id %}">Update</a></td>
