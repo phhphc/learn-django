@@ -64,7 +64,7 @@ def create_order(request, pk):
             formset.save()
             return redirect('/')
 
-    return render(request, 'accounts/order_form.html', {
+    return render(request, 'accounts/customer_form.html', {
         "formset": formset,
     })
 
