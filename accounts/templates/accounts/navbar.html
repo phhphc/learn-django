@@ -4,22 +4,24 @@
     
     <img src="{% static "images/logo.png" %}"/>
     
-    <span class="text-white h4">Hello, {{request.user}}</span>
-    <span class="text-white h4"><a href="{% url 'logout' %}">Logout</a></span>
-
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
+        {% if request.user.is_staff %}
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'home' %}">Dashboard<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'products' %}">Products</a>
         </li>
+        {% endif %}
       </ul>
     </div>
-
+    
+    <span class="text-white ml-5 h4">Hello, {{request.user}}</span>
+    <span class="text-white ml-5 h4"><a href="{% url 'logout' %}">Logout</a></span>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
   </nav>
