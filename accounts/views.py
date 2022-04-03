@@ -1,12 +1,66 @@
+from cv2 import log
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from matplotlib import use
 from .models import *
 from .forms import *
 from django.forms import inlineformset_factory
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from .filters import *
+
+from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 
+def registerPage(request):
+    
+    form = CreateUserForm()
+
+    if (request.method == 'POST'):
+        form = CreateUserForm(request.POST)
+        if (form.is_valid()):
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, "Account was created for " + user)
+
+            return redirect('/login')
+
+    return render(request, 'accounts/register.html', {
+        'form': form,
+    })
+
+
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request, "Username or Password is incorrect")
+
+    return render(request, 'accounts/login.html', {
+
+    })
+
+
+def logoutUser(request):
+    logout(request)
+
+    return redirect('/login')
+
+
+@login_required(login_url='/login')
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -26,6 +80,7 @@ def home(request):
     })
 
 
+@login_required(login_url='/login')
 def products(request):
     products = Product.objects.all()
 
@@ -34,6 +89,7 @@ def products(request):
     })
 
 
+@login_required(login_url='/login')
 def customer(request, pk):
     customer = Customer.objects.get(id=pk)
 
@@ -47,14 +103,16 @@ def customer(request, pk):
         "customer": customer,
         "orders": orders,
         "orders_count": orders_count,
-        "myFilter" : myFilter,
+        "myFilter": myFilter,
     })
 
 
+@login_required(login_url='/login')
 def create_order(request, pk):
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('product', 'status'), extra=10)
+    OrderFormSet = inlineformset_factory(
+        Customer, Order, fields=('product', 'status'), extra=10)
     customer = Customer.objects.get(id=pk)
-    formset = OrderFormSet(queryset=Order.objects.none(),instance=customer)
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
     # form = OrderForm(initial={'customer': customer})
 
     if request.method == 'POST':
@@ -69,6 +127,7 @@ def create_order(request, pk):
     })
 
 
+@login_required(login_url='/login')
 def update_order(request, pk):
 
     order = Order.objects.get(id=pk)
@@ -85,14 +144,15 @@ def update_order(request, pk):
     })
 
 
+@login_required(login_url='/login')
 def delete_order(request, pk):
 
     order = Order.objects.get(id=pk)
-    
+
     if request.method == "POST":
         order.delete()
         return redirect('/')
-    
+
     return render(request, 'accounts/delete.html', {
         "item": order,
     })
