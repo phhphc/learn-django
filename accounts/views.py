@@ -1,12 +1,8 @@
-from cv2 import log
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from matplotlib import use
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import Group
-from sympy import ground_roots
 
 from .forms import *
 from .models import *
@@ -106,6 +102,22 @@ def userPage(request):
         "total_orders": total_orders,
         "delivered": delivered,
         "pending": pending
+    })
+
+
+@login_required(login_url='/login')
+@allowed_users(allowed_roles=['customer'])
+def accountSettings(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    
+    if request.method == "POST":
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+        
+    return render(request, 'accounts/account_settings.html', {
+        'form': form,
     })
 
 
