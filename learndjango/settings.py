@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'accounts',
     
     'django_filters',
+    
+    'storages', 
 ]
 
 MIDDLEWARE = [
@@ -82,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'learn-django',
         'USER': 'postgres',
-        'PASSWORD': 'my_secret_password',
+        'PASSWORD': 'wix2vp85uR5Y8cQ',
         'HOST': 'database-2.cfsffhwc4gln.ap-southeast-1.rds.amazonaws.com',
         'PORT': '5432',
     }
@@ -145,3 +147,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'my_secret_email@gmail.com'
 EMAIL_HOST_PASSWORD = 'my_very_secure_password'
+
+
+#S3 BUCKETS CONFIG
+AWS_ACCESS_KEY_ID = 'secret'
+AWS_SECRET_ACCESS_KEY = 'secret'
+AWS_STORAGE_BUCKET_NAME = 'phhphc32-bucket'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
