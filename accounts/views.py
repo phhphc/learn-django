@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import Group
 
 from .forms import *
 from .models import *
@@ -10,8 +9,6 @@ from .filters import *
 from .decorators import *
 
 from django.contrib.auth.decorators import login_required
-
-from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 
