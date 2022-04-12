@@ -28,7 +28,7 @@ Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -95,9 +95,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'learn-django',
-        'USER': 'postgres',
-        'PASSWORD': 'wix2vp85uR5Y8cQ',
-        'HOST': 'database-2.cfsffhwc4gln.ap-southeast-1.rds.amazonaws.com',
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
         'PORT': '5432',
     }
 }
